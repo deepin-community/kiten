@@ -1,0 +1,4 @@
+# "private" library
+kiten: package-name-doesnt-match-sonames
+# "private" library
+kiten: no-symbols-control-file

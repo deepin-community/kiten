@@ -1,0 +1,126 @@
+---------------------------TODO List---------------------------
+Cat By  Description
+By 4.1:
+R+  4.1 Profile the linear vs indexed EDICT back-ends
+By 4.2:
+B   4.2 Investigate crash with kinput2, long ago... https://bugs.kde.org/show_bug.cgi?id=115579
+B   4.2 Investigate https://bugs.kde.org/show_bug.cgi?id=115579 , this is probably dated
+B   4.2 Make radselect hilight colors noticeable (use current theme)
+F+  4.2 GHNS support (including dictionary "updates") https://bugs.kde.org/show_bug.cgi?id=110541
+R+  4.2 Trim data/edict down to "common entries only" to help distros/svn users
+R   4.2 Correct radselect license/move some of radselect into libkiten
+R   4.2 DBUS Interface + Documentation
+R   4.2 Be EBN-clean and dashboard-clean (RECURRENT)
+R   4.2 Update Help Files (RECURRENT)
+Unscheduled:
+B    -  Handle searches that don't include Word, Reading or Meaning in a sane way
+B-   -  Searching is duplicated from input box, atm
+F+   -  Radical decomposition in radselect (including in drag and drop)
+F+   -  Heisig "primitive" set in radselect
+F+   -  Mouse-over kanji information in radselect
+F+   -  Greatly expand the radkfile, to include pronunciation, alternatives, etc
+F+   -  Multi-thread the app, so the interface doesn't wait for the results
+F+   -  Add a kana table (it would be good to have audio samples for pronunciation as well)
+F+   -  Handle searches of adjectives ending in -na (like deconjugation of verbs)
+F+   -  Handle JMDict files
+F+   -  Handle KANJIDIC2 files
+F+   -  Handle fpwing files
+F+   -  "Quick-Select" widget to adjust which dictionaries a given query will use
+F+   -  Export to various types of flashcard programs (Learn mode replacement)
+F    -  New Icons (radselect launch, filter rare, match beginning/exact/any)
+F    -  Add "drawn kanji" support somewhere (kanjidic synthetic output field?)
+F    -  Add sub-program to support mouse/tablet drawn kanji for lookup
+F    -  Opening radselect while looking at a 1 kanji search displays radicals
+F-   -  Add popup menus to Forward/Back history buttons
+F-   -  Nicely format output fields (word type in particular)
+F-   -  Links directly from things like word type to Help File
+F-   -  Seperate Project: Screensaver to display random entries https://bugs.kde.org/show_bug.cgi?id=63296
+F-   -  Can we omit/seperate name readings? https://bugs.kde.org/show_bug.cgi?id=46511
+C    -  Move display to an MVC system
+C    -  Preferences Framework
+?    -  Case sensitive non-japanese searches?
+?    -  Look carefully at EDICT2 format... note the multiple kanji/kana given
+?    -  Input Filters?
+?    -  Implement Multi-search?
+?    -  Sequential lists?
+?    -  Dictionary Editor? (Version and upload changes?)
+?    -  Custom Dictionaries? (Open flashcard decks as dictionaries?)
+Category: (F)eature, (B)ug, (R)elease Requirement, (C)ode Organizaion, (?)Investigate as possible
+        (+/- indicate relative importance IMNSHO)
+	(RECURRENT) = After a release, move this to the next planned release
+
+---------------------------TODO Details---------------------------
+MVC: Primary advantages of moving to a model-view system are that we would be able to offer things like
+	"right click on the entry, and see a list of other fields that could be displayed". Mouse-over kanji
+	writing and such would be easy
+	Disadvantages: the current CSS code is fairly easy to work with and understand
+
+Preferences Framework:
+	At the moment, the lib and app preference files need to be exactly in sync, or a crash will occur.
+	We probably need to make our own layer on top of the general preferences code.
+	Connections:
+		Select Dictionary File:
+			Currently handled entirely between app and .kcfg (lib is just a server here)
+		Select Display Fields:
+			List of widgets is returned from DictionaryManager, plugged into a KTabWidget
+			by the app. Requires app to include space in .kcfg if supporting a dict type.
+			Display Field includes things like "--NewLine--"
+		Sort Order:
+			DictionaryManager is asked for a complete <long name> -> <short abbreviation>
+			QMap. Uses the keys from this.
+
+Multi-search;
+	This capability would allow you to select, for example, all words that contain any of a list of kanji.
+	Alternatively, it would allow you select all words that contain at least one of the listed kanji, and
+	no kanji that are not on the list. The interface for this might be tricky.
+
+Sequential Lists
+	Be able to generate sequential learning lists, given a list of known kanji
+	The Layered method is either very time intensive, or very memory intensive
+		pick one and try implementing. Provided we limit the lists to containing
+		only the resultant kanji, even the memory intensive version will only be a
+		few (~20) megs for fairly large lists. Even on modern hardware, a perl implementation
+		with ~40 kanji on each list takes about 10-15 seconds to run.
+	Split into a separate app.  This is the optimal time for a complete rewrite
+		"inspired by learn mode".
+
+Other Formats:
+	(Potential) other formats to look into:
+		(fre)epwing: http://www.sra.co.jp/people/m-kasahr/freepwing/
+			using libeb?  Using it would allow "accessing EB, EBG, EBXA and EPWING CD-ROM dictionaries"
+		jdictionary: http://jdictionary.info/
+		stardict: http://stardict.sourceforge.net
+		DICT: http://www.dict.org/
+			English -> English mainly, but networked ... would be cool to see.
+			Check out kdict for a client in action.
+		JMDict: http://www.csse.monash.edu.au/~jwb/j_jmdict.html
+
+
+---------------------------Design Notes---------------------------
+Search String Design:
+	Add some complex search capabilities (space seperated or symbol seperated)
+		Search String BNF: [<item>]*
+			<item> ::= <non-japanese meaning - not allowed to contain ':'>
+			<item> ::= <kana word - must be exclusively kana>
+			<item> ::= <word containing kanji - may contain kana>
+			<item> ::= <key>:<extended value>
+			<key> ::= either a single character or code for one of the dictionaries
+			<extended value> ::= a value that the key has to match
+		The Search <item> list is "and"ed together logically, to determine results
+			This can be modified with the match-type setting, which is evaluated
+			seperately for each field
+
+Code Audit Checklist:
+	Static Variables (avoid them)... use KStaticDeleter with pointers if needed
+	Static Methods (use them if possible)
+	Forward Declarations (eliminate header includes from header files)
+	Iterators (Cache an Iterator.end() object instead of using end() in the loop)
+	Iterators (Use const interators whenever possible)
+	Iterators (foreach)
+	Review the Initialization chain for using Delayed Init
+	Double check the QCString usage for termination (in the indexer code)
+	Use QString.isNull() and isEmpty()... not comparison to QString(""), "" or QString::null
+	Use deleteLater() as a shortcut instead of manually implementing QTimer::oneShot() code
+	Check ALL files for i18n strings that are not inside of i18n() or tr() methods
+	Look through and get rid of redundant headers (particularly in the lib files)
+

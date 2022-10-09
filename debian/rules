@@ -1,0 +1,19 @@
+#!/usr/bin/make -f
+
+l10npkgs_firstversion_ok := 4:16.04.3-6~
+include /usr/share/pkg-kde-tools/qt-kde-team/2/l10n-packages.mk
+
+%:
+	dh $@ --with kf5
+
+execute_after_dh_auto_install:
+	# do not ship development stuff
+	rm -rf debian/kiten/usr/include/
+	find debian/kiten -type l -name '*.so' -delete
+	# use the system font from fonts-kanjistrokeorders
+	rm -f debian/kiten/usr/share/fonts/kanjistrokeorders/KanjiStrokeOrders.ttf
+	# at the end, remove empty directories
+	find debian/kiten -type d -empty -delete
+
+override_dh_gencontrol: l10npkgs_firstversion_ok
+	dh_gencontrol

@@ -1,0 +1,47 @@
+Source: kiten
+Section: kde
+Priority: optional
+Maintainer: Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>
+Uploaders: Pino Toscano <pino@debian.org>,
+           Sune Vuorela <sune@debian.org>,
+           Norbert Preining <norbert@preining.info>,
+Build-Depends: cmake (>= 3.5~),
+               debhelper-compat (= 13),
+               extra-cmake-modules (>= 5.46.0~),
+               gettext,
+               libkf5archive-dev (>= 5.46.0~),
+               libkf5completion-dev (>= 5.46.0~),
+               libkf5config-dev (>= 5.46.0~),
+               libkf5configwidgets-dev (>= 5.46.0~),
+               libkf5coreaddons-dev (>= 5.46.0~),
+               libkf5crash-dev (>= 5.46.0~),
+               libkf5doctools-dev (>= 5.46.0~),
+               libkf5i18n-dev (>= 5.46.0~),
+               libkf5kio-dev (>= 5.46.0~),
+               libkf5notifications-dev (>= 5.46.0~),
+               libkf5xmlgui-dev (>= 5.46.0~),
+               pkg-kde-tools (>> 0.15.15),
+               qtbase5-dev (>= 5.11.0~),
+Standards-Version: 4.5.1
+Rules-Requires-Root: no
+Homepage: http://edu.kde.org/
+Vcs-Browser: https://salsa.debian.org/qt-kde-team/kde/kiten
+Vcs-Git: https://salsa.debian.org/qt-kde-team/kde/kiten.git
+
+Package: kiten
+Architecture: any
+Depends: edict,
+         fonts-kanjistrokeorders,
+         fonts-vlgothic | fonts-japanese-gothic,
+         kanjidic,
+         ${misc:Depends},
+         ${shlibs:Depends},
+Suggests: khelpcenter
+Breaks: ${kde-l10n:all}
+Replaces: libkiten5, ${kde-l10n:all}
+Conflicts: libkiten5
+Description: Japanese reference and study aid for KDE
+ Kiten is a collection of Japanese reference tools and study aids for KDE,
+ including a Japanese/English dictionary, Kanji dictionary, and Kanji quiz.
+ .
+ This package is part of the KDE education module.

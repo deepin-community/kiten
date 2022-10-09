@@ -1,0 +1,119 @@
+<ui version="4.0" stdsetdef="1" >
+  <author>Joseph Kerian</author>
+  <class>configDictSelect</class>
+  <widget class="QWidget" name="configDictSelect" >
+    <property name="geometry" >
+      <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>458</width>
+        <height>337</height>
+      </rect>
+    </property>
+    <property name="windowTitle" >
+      <string>Dictionary Selector</string>
+    </property>
+    <layout class="QVBoxLayout" >
+      <item>
+        <layout class="QHBoxLayout" >
+          <property name="margin" >
+            <number>0</number>
+          </property>
+          <item>
+            <widget class="QCheckBox" name="__useGlobal" >
+              <property name="text" >
+                <string>Use prei&amp;nstalled dict</string>
+              </property>
+            </widget>
+          </item>
+          <item>
+            <spacer name="spacer3_2" >
+              <property name="sizeHint" >
+                <size>
+                  <width>40</width>
+                  <height>20</height>
+                </size>
+              </property>
+              <property name="sizeType" >
+                <enum>Expanding</enum>
+              </property>
+              <property name="orientation" >
+                <enum>Horizontal</enum>
+              </property>
+            </spacer>
+          </item>
+        </layout>
+      </item>
+      <item>
+        <layout class="QHBoxLayout" >
+          <property name="margin" >
+            <number>0</number>
+          </property>
+          <item>
+            <widget class="QTreeWidget" name="fileList" >
+              <column>
+                <property name="text" >
+                  <string>Name</string>
+                </property>
+                <property name="clickable" >
+                  <bool>true</bool>
+                </property>
+                <property name="resizable" >
+                  <bool>true</bool>
+                </property>
+              </column>
+              <column>
+                <property name="text" >
+                  <string>File</string>
+                </property>
+                <property name="clickable" >
+                  <bool>true</bool>
+                </property>
+                <property name="resizable" >
+                  <bool>true</bool>
+                </property>
+              </column>
+            </widget>
+          </item>
+          <item>
+            <layout class="QVBoxLayout" >
+              <property name="margin" >
+                <number>0</number>
+              </property>
+              <item>
+                <widget class="QPushButton" name="addButton" >
+                  <property name="text" >
+                    <string>&amp;Add...</string>
+                  </property>
+                </widget>
+              </item>
+              <item>
+                <widget class="QPushButton" name="delButton" >
+                  <property name="text" >
+                    <string>Delete</string>
+                  </property>
+                </widget>
+              </item>
+              <item>
+                <spacer name="spacer4_2" >
+                  <property name="sizeHint" >
+                    <size>
+                      <width>20</width>
+                      <height>120</height>
+                    </size>
+                  </property>
+                  <property name="sizeType" >
+                    <enum>Expanding</enum>
+                  </property>
+                  <property name="orientation" >
+                    <enum>Vertical</enum>
+                  </property>
+                </spacer>
+              </item>
+            </layout>
+          </item>
+        </layout>
+      </item>
+    </layout>
+  </widget>
+  </ui>
